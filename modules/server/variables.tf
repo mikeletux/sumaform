@@ -273,3 +273,8 @@ variable "db_configuration" {
     port               = "5432"
   }
 }
+
+variable "quantity" {
+  description = "number of hosts like this one"
+  default     = 1
+}
