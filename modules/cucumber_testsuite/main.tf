@@ -381,7 +381,7 @@ module "controller" {
   name   = lookup(local.names, "controller", "ctl")
 
   base_configuration             = module.base.configuration
-  server_configuration           = module.server.configuration
+  server_configuration           = contains(local.hosts, "server") ? module.server.configuration : module.server_containerized.configuration
   proxy_configuration            = contains(local.hosts, "proxy") ? module.proxy.configuration : { hostname = null }
   client_configuration           = contains(local.hosts, "suse-client") ? module.suse-client.configuration : { hostnames = [], ids = [], ipaddrs = [], macaddrs = [] }
   minion_configuration           = contains(local.hosts, "suse-minion") ? module.suse-minion.configuration : { hostnames = [], ids = [], ipaddrs = [], macaddrs = [] }
@@ -419,7 +419,7 @@ output "configuration" {
   value = {
     base = module.base.configuration
     server = module.server.configuration
-    server_containerized = module.server_containerized.configuration
+    server = contains(local.hosts, "server") ? module.server.configuration : module.server_containerized.configuration
     proxy = module.proxy.configuration
     suse-client = module.suse-client.configuration
     slemicro-minion = module.slemicro-minion.configuration
